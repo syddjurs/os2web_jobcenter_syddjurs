@@ -1,0 +1,11 @@
+Sprint 23
+=========
+Install os2web_jobcenter_syddjurs module
+Install jobcenter_syddjurs feature
+
+Disable contexts:
+OS2Web - Generelt: footerblokke
+os2web_diverse
+
+
+

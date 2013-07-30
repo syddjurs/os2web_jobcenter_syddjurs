@@ -1,0 +1,15 @@
+name = Syddjurs - jobcenter
+core = 7.x
+package = Features
+php = 5.2.4
+version = 7.x-1.0
+project = syddjurs_jobcenter
+dependencies[] = block
+dependencies[] = context
+dependencies[] = ctools
+dependencies[] = menu
+dependencies[] = nice_menus
+features[context][] = os2web_jobcenter_syddjurs_diverse
+features[ctools][] = context:context:3
+features[features_api][] = api:2
+project path = sites/jobcentersyddjurs.dk/modules/os2web_jobcenter_syddjurs/
