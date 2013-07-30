@@ -1,0 +1,99 @@
+<?php
+/**
+ *
+ * @author Thomas Thune Hansen <tth@bellcom.dk>
+ * @copyright bellcom open source aps
+ */
+
+/*
+ * Implements hook_menu()
+ */
+
+function os2web_jobcenter_syddjurs_menu(){
+  $items = array();
+
+  // Admin menu
+  $items['admin/config/os2web_jobcenter_syddjurs'] = array(
+    'title' => 'OS2Web jobcenter syddjurs',
+    'description' => 'General settings ',
+    'position' => 'right',
+    'weight' => -10,
+    'page callback' => 'system_admin_menu_block_page',
+    'file' => 'system.admin.inc',
+    'file path' => drupal_get_path('module', 'system'),
+    'access arguments' => array('administer site configuration'),
+  );
+
+  $items['admin/config/os2web_jobcenter_syddjurs/settings'] = array(
+    'title' => 'OS2web jobcenter syddjurs',
+    'description' => 'Change settings for OS2web jobcenter syddjurs',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('os2web_jobcenter_syddjurs_settings_form'),
+    'access arguments' => array('administer site configuration'),
+  );
+
+  return $items;
+}
+
+/*
+ * Implements hook_preprocess_region()
+ */
+function os2web_jobcenter_syddjurs_preprocess_region(&$vars){
+  if($vars['region'] === 'sidebar_second') {
+    $paths = variable_get('os2web_jobcenter_syddjurs_paths', "kontakt\njob-opslag/*");
+    $nid = variable_get('os2web_jobcenter_syddjurs_nid', 114);
+
+    $path = drupal_get_path_alias(current_path());
+
+    if(drupal_match_path($path, $paths)){
+
+      $v = views_get_view('kontaktblok');        
+      $vars['content'] = '<section id="block-views-kontaktblok-block" class="block"><h2 class="block-title">' . $v->display['default']->display_options['title'] . '</h2>' . $v->preview('block', array(114)) . '</section>';
+    }
+  }
+}
+
+/*
+ * Implements hook_form_alter()
+ */
+function os2web_jobcenter_syddjurs_form_alter(&$form, &$form_state, $form_id){
+  // Insert rendered node in contact form
+  if($form_id === 'contact_site_form') {
+    $node = node_load(variable_get('os2web_jobcenter_syddjurs_contact_nid'));
+    $node->title = NULL;
+
+    if(is_object($node)){
+      $form['contact_text'] = array(
+        '#type' => 'item',
+        '#markup' => drupal_render(node_view($node)),
+        '#weight' => -100,
+      ); 
+    }
+  }
+}
+
+/*
+ * Settings form callback
+ */
+function os2web_jobcenter_syddjurs_settings_form(){
+  $form['os2web_jobcenter_syddjurs_paths'] = array(
+    '#title' => t('Display generic contact block on these pages'),
+    '#default_value' => variable_get('os2web_jobcenter_syddjurs_paths', "kontakt\njob-opslag/*"),
+    '#type' => 'textarea',
+  );
+
+  $form['os2web_jobcenter_syddjurs_nid'] = array(
+    '#title' => t('Node id for contact block'),
+    '#default_value' => variable_get('os2web_jobcenter_syddjurs_nid', 114),
+    '#type' => 'textfield',
+  );
+
+  $form['os2web_jobcenter_syddjurs_contact_nid'] = array(
+    '#title' => t('Node id for info text on contact page'),
+    '#default_value' => variable_get('os2web_jobcenter_syddjurs_contact_nid'),
+    '#type' => 'textfield',
+  );
+
+
+  return system_settings_form($form);
+}

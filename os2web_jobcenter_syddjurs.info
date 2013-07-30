@@ -1,0 +1,9 @@
+name = OS2Web jobcenter syddjurs
+description = Extra stuff for syddjurs jobcenter
+core = 7.x
+; Examples - use at will
+;package = Views
+;dependencies[] = views
+;dependencies[] = panels
+;files[] = example.test
+;configure = admin/config/content/example
