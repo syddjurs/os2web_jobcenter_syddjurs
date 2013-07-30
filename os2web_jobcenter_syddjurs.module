@@ -59,10 +59,10 @@ function os2web_jobcenter_syddjurs_preprocess_region(&$vars){
 function os2web_jobcenter_syddjurs_form_alter(&$form, &$form_state, $form_id){
   // Insert rendered node in contact form
   if($form_id === 'contact_site_form') {
-    $node = node_load(variable_get('os2web_jobcenter_syddjurs_contact_nid'));
-    $node->title = NULL;
+    $node = node_load(variable_get('os2web_jobcenter_syddjurs_contact_nid'), '');
 
     if(is_object($node)){
+      $node->title = NULL;
       $form['contact_text'] = array(
         '#type' => 'item',
         '#markup' => drupal_render(node_view($node)),
