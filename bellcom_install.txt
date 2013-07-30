@@ -7,5 +7,8 @@ Disable contexts:
 OS2Web - Generelt: footerblokke
 os2web_diverse
 
+Disable suggestion (spell check):
+admin/config/search/apachesolr/search-pages/core_search/edit
+
 
 
